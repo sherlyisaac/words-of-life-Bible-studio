@@ -1,0 +1,6 @@
+{
+  "name": "WordsOfLife - Bible Verse Studio",
+  "description": "Create inspiring Bible verse graphics with scenic, floral, and watercolor backgrounds, rich typography, social sharing, daily reminders, and offline support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

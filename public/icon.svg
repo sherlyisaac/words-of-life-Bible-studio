@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4c1d95" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6" />
+      <stop offset="60%" stop-color="#fef08a" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded rect -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Radial aura -->
+  <circle cx="256" cy="240" r="180" fill="url(#glow)" />
+
+  <!-- Radiating light rays -->
+  <g opacity="0.3" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+    <line x1="256" y1="90" x2="256" y2="130" />
+    <line x1="256" y1="360" x2="256" y2="390" />
+    <line x1="120" y1="230" x2="155" y2="235" />
+    <line x1="392" y1="230" x2="357" y2="235" />
+    <line x1="160" y1="140" x2="188" y2="165" />
+    <line x1="352" y1="140" x2="324" y2="165" />
+    <line x1="165" y1="320" x2="192" y2="295" />
+    <line x1="347" y1="320" x2="320" y2="295" />
+  </g>
+
+  <!-- Open Bible with Book Pages -->
+  <g filter="url(#shadow)">
+    <!-- Book Cover base -->
+    <path d="M120 330 C180 345, 230 330, 256 315 C282 330, 332 345, 392 330 L392 195 C332 210, 282 195, 256 180 C230 195, 180 210, 120 195 Z" fill="#2e1065" opacity="0.8" />
+    
+    <!-- Left Page -->
+    <path d="M126 190 C180 205, 226 195, 252 180 L252 305 C226 320, 180 330, 126 315 Z" fill="#ffffff" />
+    <!-- Right Page -->
+    <path d="M386 190 C332 205, 286 195, 260 180 L260 305 C286 320, 332 330, 386 315 Z" fill="#f8fafc" />
+
+    <!-- Center spine shade -->
+    <path d="M250 178 L262 178 L262 308 L250 308 Z" fill="#cbd5e1" opacity="0.5" />
+
+    <!-- Scripture Text Lines on left -->
+    <line x1="150" y1="220" x2="232" y2="212" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+    <line x1="150" y1="240" x2="232" y2="232" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+    <line x1="150" y1="260" x2="232" y2="252" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+    <line x1="150" y1="280" x2="205" y2="274" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Scripture Text Lines on right -->
+    <line x1="280" y1="212" x2="362" y2="220" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+    <line x1="280" y1="232" x2="362" y2="240" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+    <line x1="280" y1="252" x2="362" y2="260" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+    <line x1="280" y1="272" x2="335" y2="278" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Elegant Cross in the center / top -->
+    <g transform="translate(256, 150)">
+      <path d="M-4 -30 L4 -30 L4 -12 L22 -12 L22 -4 L4 -4 L4 32 L-4 32 L-4 -4 L-22 -4 L-22 -12 L-4 -12 Z" fill="url(#goldGrad)" filter="url(#shadow)" />
+      <!-- Star spark -->
+      <polygon points="0,-36 3,-30 9,-28 3,-26 0,-20 -3,-26 -9,-28 -3,-30" fill="#ffffff" />
+    </g>
+  </g>
+
+  <!-- Ribbon bookmark -->
+  <path d="M253 295 L259 295 L263 355 L256 345 L249 355 Z" fill="#ef4444" />
+</svg>

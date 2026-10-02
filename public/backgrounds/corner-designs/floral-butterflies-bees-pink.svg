@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF9" />
+      <stop offset="40%" stop-color="#FFF8F2" />
+      <stop offset="70%" stop-color="#FFF5F0" />
+      <stop offset="100%" stop-color="#FFF0EB" />
+    </linearGradient>
+
+    <!-- Radial Soft Glow in Center -->
+    <radialGradient id="centerGlow" cx="50%" cy="48%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9" />
+      <stop offset="70%" stop-color="#FFF9F5" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#FFF0EB" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Rose Petal Pink Gradient -->
+    <linearGradient id="rosePink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCE7F3" />
+      <stop offset="50%" stop-color="#F472B6" />
+      <stop offset="100%" stop-color="#DB2777" />
+    </linearGradient>
+
+    <linearGradient id="softBlush" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF1F2" />
+      <stop offset="50%" stop-color="#FDA4AF" />
+      <stop offset="100%" stop-color="#F43F5E" />
+    </linearGradient>
+
+    <linearGradient id="petalCream" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#FCE7F3" />
+      <stop offset="100%" stop-color="#FBCFE8" />
+    </linearGradient>
+
+    <!-- Foliage Greens -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#86EFAC" />
+      <stop offset="40%" stop-color="#22C55E" />
+      <stop offset="100%" stop-color="#15803D" />
+    </linearGradient>
+
+    <linearGradient id="sageLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D1FAE5" />
+      <stop offset="50%" stop-color="#6EE7B7" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Golden Butterfly & Bee Accents -->
+    <linearGradient id="goldAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A" />
+      <stop offset="50%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <!-- Butterfly Wing Shimmer -->
+    <linearGradient id="butterflyWing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF2F8" />
+      <stop offset="40%" stop-color="#F472B6" />
+      <stop offset="80%" stop-color="#FB7185" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <!-- Filter for soft watercolor drop shadow -->
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#831843" flood-opacity="0.12" />
+    </filter>
+
+    <!-- Reusable Rose Floral Cluster -->
+    <g id="fullRose">
+      <!-- Outer Petals -->
+      <path d="M0,0 C-35,-25 -45,-55 -25,-85 C-5,-115 45,-110 65,-80 C85,-50 65,-20 0,0 Z" fill="url(#petalCream)" />
+      <path d="M-15,-10 C-50,-20 -70,-60 -50,-90 C-30,-120 20,-110 40,-85 C60,-60 20,-20 -15,-10 Z" fill="url(#rosePink)" opacity="0.85" />
+      <path d="M10,-10 C35,-30 65,-50 60,-80 C55,-110 10,-105 -15,-80 C-40,-55 -10,-20 10,-10 Z" fill="url(#softBlush)" opacity="0.9" />
+      <!-- Inner Petal Layers -->
+      <circle cx="5" cy="-55" r="28" fill="url(#rosePink)" />
+      <path d="M-5,-50 C-15,-70 25,-75 20,-55 C15,-40 -5,-40 -5,-50 Z" fill="#9D174D" opacity="0.6" />
+      <circle cx="7" cy="-56" r="10" fill="#BE185D" />
+    </g>
+
+    <!-- Reusable Butterfly -->
+    <g id="butterfly">
+      <!-- Left Wings -->
+      <path d="M0,0 C-20,-30 -60,-45 -55,-15 C-50,15 -15,10 0,0 Z" fill="url(#butterflyWing)" opacity="0.92" filter="url(#softShadow)" />
+      <path d="M-5,5 C-25,15 -45,35 -35,50 C-25,65 -5,35 -5,5 Z" fill="url(#butterflyWing)" opacity="0.85" />
+      <!-- Right Wings -->
+      <path d="M0,0 C20,-30 60,-45 55,-15 C50,15 15,10 0,0 Z" fill="url(#butterflyWing)" opacity="0.92" filter="url(#softShadow)" />
+      <path d="M5,5 C25,15 45,35 35,50 C25,65 5,35 5,5 Z" fill="url(#butterflyWing)" opacity="0.85" />
+      <!-- Body & Antennae -->
+      <path d="M0,-20 C-2,-15 -2,25 0,30 C2,25 2,-15 0,-20 Z" fill="#4A044E" />
+      <circle cx="0" cy="-22" r="3.5" fill="#4A044E" />
+      <path d="M-1,-23 Q-8,-35 -14,-32" stroke="#4A044E" stroke-width="1.5" fill="none" />
+      <path d="M1,-23 Q8,-35 14,-32" stroke="#4A044E" stroke-width="1.5" fill="none" />
+      <!-- Gold accents on wings -->
+      <circle cx="-30" cy="-20" r="4" fill="#FDE047" opacity="0.8" />
+      <circle cx="30" cy="-20" r="4" fill="#FDE047" opacity="0.8" />
+    </g>
+
+    <!-- Reusable Honeybee -->
+    <g id="honeybee">
+      <!-- Translucent Wings -->
+      <ellipse cx="-10" cy="-14" rx="14" ry="7" transform="rotate(-30 -10 -14)" fill="#FFFFFF" opacity="0.75" stroke="#E0E7FF" stroke-width="1" />
+      <ellipse cx="10" cy="-14" rx="14" ry="7" transform="rotate(30 10 -14)" fill="#FFFFFF" opacity="0.75" stroke="#E0E7FF" stroke-width="1" />
+      <!-- Striped Body -->
+      <ellipse cx="0" cy="0" rx="11" ry="16" fill="url(#goldAmber)" />
+      <path d="M-10,-5 Q0,-3 10,-5" stroke="#1E293B" stroke-width="3" fill="none" />
+      <path d="M-11,0 Q0,2 11,0" stroke="#1E293B" stroke-width="3.5" fill="none" />
+      <path d="M-9,6 Q0,8 9,6" stroke="#1E293B" stroke-width="3" fill="none" />
+      <!-- Head & Stinger -->
+      <circle cx="0" cy="-13" r="6" fill="#1E293B" />
+      <polygon points="0,18 -2,15 2,15" fill="#1E293B" />
+      <!-- Antennae -->
+      <path d="M-3,-17 Q-7,-25 -10,-24" stroke="#1E293B" stroke-width="1.2" fill="none" />
+      <path d="M3,-17 Q7,-25 10,-24" stroke="#1E293B" stroke-width="1.2" fill="none" />
+    </g>
+
+    <!-- Leaf cluster -->
+    <g id="leafBranch">
+      <path d="M0,0 Q30,-40 60,-20 Q40,20 0,0 Z" fill="url(#leafGrad)" />
+      <path d="M0,0 Q-30,-40 -60,-20 Q-40,20 0,0 Z" fill="url(#sageLeaf)" />
+      <path d="M0,0 Q10,-70 30,-90 Q15,-60 0,0 Z" fill="url(#leafGrad)" />
+      <path d="M0,0 Q-10,-70 -30,-90 Q-15,-60 0,0 Z" fill="url(#sageLeaf)" />
+    </g>
+  </defs>
+
+  <!-- 1. Background Fill & Soft Warm Glow -->
+  <rect width="1080" height="1920" fill="url(#bgGrad)" />
+  <ellipse cx="540" cy="960" rx="460" ry="780" fill="url(#centerGlow)" />
+
+  <!-- 2. Delicate Framing Borders -->
+  <rect x="50" y="50" width="980" height="1820" rx="12" fill="none" stroke="#FBCFE8" stroke-width="1.5" opacity="0.5" />
+  <rect x="62" y="62" width="956" height="1796" rx="8" fill="none" stroke="#E9D5FF" stroke-width="0.8" opacity="0.35" />
+
+  <!-- ================= TOP-LEFT CORNER ================= -->
+  <g transform="translate(40, 40)" filter="url(#softShadow)">
+    <!-- Foliage & Vines -->
+    <use href="#leafBranch" transform="translate(80, 110) scale(1.6) rotate(35)" />
+    <use href="#leafBranch" transform="translate(140, 60) scale(1.3) rotate(85)" />
+    <use href="#leafBranch" transform="translate(50, 160) scale(1.4) rotate(-15)" />
+
+    <!-- Blooming Pink Roses -->
+    <use href="#fullRose" transform="translate(110, 110) scale(1.35) rotate(-20)" />
+    <use href="#fullRose" transform="translate(200, 80) scale(0.95) rotate(40)" />
+    <use href="#fullRose" transform="translate(70, 200) scale(1.05) rotate(-65)" />
+
+    <!-- Cherry blossoms & Buds -->
+    <circle cx="160" cy="180" r="14" fill="#FCE7F3" />
+    <circle cx="160" cy="180" r="6" fill="#F43F5E" />
+    <circle cx="250" cy="130" r="16" fill="#FCE7F3" />
+    <circle cx="250" cy="130" r="7" fill="#F43F5E" />
+    <circle cx="90" cy="270" r="15" fill="#FCE7F3" />
+    <circle cx="90" cy="270" r="6" fill="#F43F5E" />
+
+    <!-- Fluttering Butterfly -->
+    <use href="#butterfly" transform="translate(270, 210) scale(0.85) rotate(18)" />
+
+    <!-- Honeybee hovering -->
+    <use href="#honeybee" transform="translate(190, 250) scale(0.9) rotate(-25)" />
+  </g>
+
+  <!-- ================= TOP-RIGHT CORNER ================= -->
+  <g transform="translate(1040, 40) scale(-1, 1)" filter="url(#softShadow)">
+    <use href="#leafBranch" transform="translate(80, 110) scale(1.6) rotate(35)" />
+    <use href="#leafBranch" transform="translate(140, 60) scale(1.3) rotate(85)" />
+    <use href="#leafBranch" transform="translate(50, 160) scale(1.4) rotate(-15)" />
+
+    <use href="#fullRose" transform="translate(110, 110) scale(1.35) rotate(-20)" />
+    <use href="#fullRose" transform="translate(200, 80) scale(0.95) rotate(40)" />
+    <use href="#fullRose" transform="translate(70, 200) scale(1.05) rotate(-65)" />
+
+    <circle cx="160" cy="180" r="14" fill="#FCE7F3" />
+    <circle cx="160" cy="180" r="6" fill="#F43F5E" />
+    <circle cx="250" cy="130" r="16" fill="#FCE7F3" />
+    <circle cx="250" cy="130" r="7" fill="#F43F5E" />
+
+    <!-- Honeybee on right side -->
+    <use href="#honeybee" transform="translate(240, 210) scale(0.85) rotate(35)" />
+  </g>
+
+  <!-- ================= BOTTOM-LEFT CORNER ================= -->
+  <g transform="translate(40, 1880) scale(1, -1)" filter="url(#softShadow)">
+    <use href="#leafBranch" transform="translate(80, 110) scale(1.6) rotate(35)" />
+    <use href="#leafBranch" transform="translate(140, 60) scale(1.3) rotate(85)" />
+    <use href="#leafBranch" transform="translate(50, 160) scale(1.4) rotate(-15)" />
+
+    <use href="#fullRose" transform="translate(110, 110) scale(1.4) rotate(-15)" />
+    <use href="#fullRose" transform="translate(210, 80) scale(0.9) rotate(30)" />
+    <use href="#fullRose" transform="translate(70, 210) scale(1.1) rotate(-60)" />
+
+    <circle cx="170" cy="190" r="15" fill="#FCE7F3" />
+    <circle cx="170" cy="190" r="7" fill="#F43F5E" />
+    <circle cx="95" cy="280" r="14" fill="#FCE7F3" />
+    <circle cx="95" cy="280" r="6" fill="#F43F5E" />
+
+    <!-- Honeybee near bottom corner -->
+    <use href="#honeybee" transform="translate(220, 230) scale(0.95) rotate(-15)" />
+  </g>
+
+  <!-- ================= BOTTOM-RIGHT CORNER ================= -->
+  <g transform="translate(1040, 1880) scale(-1, -1)" filter="url(#softShadow)">
+    <use href="#leafBranch" transform="translate(80, 110) scale(1.6) rotate(35)" />
+    <use href="#leafBranch" transform="translate(140, 60) scale(1.3) rotate(85)" />
+    <use href="#leafBranch" transform="translate(50, 160) scale(1.4) rotate(-15)" />
+
+    <use href="#fullRose" transform="translate(110, 110) scale(1.35) rotate(-20)" />
+    <use href="#fullRose" transform="translate(200, 80) scale(1.0) rotate(40)" />
+    <use href="#fullRose" transform="translate(70, 200) scale(1.05) rotate(-65)" />
+
+    <circle cx="160" cy="180" r="14" fill="#FCE7F3" />
+    <circle cx="160" cy="180" r="6" fill="#F43F5E" />
+
+    <!-- Butterfly in bottom right corner -->
+    <use href="#butterfly" transform="translate(260, 190) scale(0.9) rotate(40)" />
+  </g>
+
+  <!-- Drifting Petals around margins (Center 75% remains wide open!) -->
+  <g opacity="0.6">
+    <ellipse cx="140" cy="460" rx="9" ry="16" transform="rotate(35 140 460)" fill="#F472B6" />
+    <ellipse cx="940" cy="440" rx="8" ry="14" transform="rotate(-25 940 440)" fill="#FDA4AF" />
+    <ellipse cx="120" cy="1480" rx="10" ry="18" transform="rotate(15 120 1480)" fill="#F472B6" />
+    <ellipse cx="950" cy="1500" rx="9" ry="15" transform="rotate(-40 950 1500)" fill="#FDA4AF" />
+  </g>
+</svg>
