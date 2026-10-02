@@ -16,16 +16,38 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 const publicDir = path.resolve(__dirname, 'public');
 const cornerDesignsDir = path.resolve(publicDir, 'backgrounds/corner-designs');
+const communityDir = path.resolve(publicDir, 'backgrounds/community');
 const uploadsDir = path.resolve(publicDir, 'backgrounds/uploads');
 const communityFile = path.resolve(publicDir, 'backgrounds/community_backgrounds.json');
 
 // Ensure directories exist
 fs.mkdirSync(cornerDesignsDir, { recursive: true });
+fs.mkdirSync(communityDir, { recursive: true });
 fs.mkdirSync(uploadsDir, { recursive: true });
 
 // Initial community designs file if not present
 if (!fs.existsSync(communityFile)) {
   const initialCommunity = [
+    {
+      id: 'L0xbgIH2VYpMD83zqxb_0',
+      title: 'Floral Dark Navy Roses Corner (Clean)',
+      category: 'Corner Designs',
+      style: 'natural',
+      url: '/backgrounds/community/floral-dark-navy-clean.png',
+      default: true,
+      tags: ['community', 'corner', 'floral', 'navy', 'roses', 'gold', 'stars', 'dark', 'clean'],
+      createdAt: 1790975000000
+    },
+    {
+      id: 'EEaSRLrLSJATESDVRzQz--k--',
+      title: "Floral Dark Navy - MOTHER'S DAY Edition (has text)",
+      category: 'Corner Designs',
+      style: 'natural',
+      url: '/backgrounds/community/floral-dark-navy-roses.png',
+      default: false,
+      tags: ['community', 'corner', 'floral', 'navy', 'roses', 'gold', 'stars', 'mothers-day', 'holiday'],
+      createdAt: 1790974000000
+    },
     {
       id: 'corner-floral-pink',
       title: 'Floral Butterflies & Bees - Pink',

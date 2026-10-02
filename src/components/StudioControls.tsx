@@ -17,6 +17,7 @@ import {
   Trash2,
   Eye,
   ShieldCheck,
+  Move,
   X
 } from 'lucide-react';
 import {
@@ -868,7 +869,9 @@ export const StudioControls: React.FC<StudioControlsProps> = ({
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-4">
                     {customBackgrounds.map((bg) => {
-                      const isSelected = background.url === bg.url;
+                      const isSelected =
+                        background.url === bg.url ||
+                        ((background as any).id && (background as any).id === bg.id);
                       return (
                         <div
                           key={bg.id}
@@ -885,7 +888,8 @@ export const StudioControls: React.FC<StudioControlsProps> = ({
                               onChangeBackground({
                                 type: 'custom',
                                 url: bg.url,
-                              })
+                                id: bg.id,
+                              } as any)
                             }
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
@@ -896,17 +900,19 @@ export const StudioControls: React.FC<StudioControlsProps> = ({
                             </span>
                           </div>
 
-                          {/* Delete button */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onDeleteCustomBackground(bg.id);
-                            }}
-                            className="absolute top-1.5 left-1.5 p-1 rounded-md bg-black/60 hover:bg-red-600 text-white/80 hover:text-white transition"
-                            title="Delete custom background"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
+                          {/* Delete button (hidden for permanent system backgrounds) */}
+                          {!bg.default && bg.id !== 'EEaSRLrLSJATESDVRzQz--k--' && bg.id !== 'L0xbgIH2VYpMD83zqxb_0' && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onDeleteCustomBackground(bg.id);
+                              }}
+                              className="absolute top-1.5 left-1.5 p-1 rounded-md bg-black/60 hover:bg-red-600 text-white/80 hover:text-white transition"
+                              title="Delete custom background"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          )}
 
                           {isSelected && (
                             <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center shadow-md">
@@ -1155,6 +1161,137 @@ export const StudioControls: React.FC<StudioControlsProps> = ({
                       </button>
                     );
                   })}
+                </div>
+              </div>
+
+              {/* SMART TEXT PLACEMENT (Avoid covering subjects like kittens/cats) */}
+              <div className="col-span-full pt-1">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                    <Move className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Text Placement & Empty Space</span>
+                  </label>
+                  <span className="text-[11px] text-purple-300 font-bold px-2 py-0.5 rounded-md bg-purple-950/60 border border-purple-500/30">
+                    {typography.textPosition === 'top'
+                      ? '⬆️ Top Empty Space'
+                      : typography.textPosition === 'bottom'
+                      ? '⬇️ Bottom'
+                      : typography.textPosition === 'center'
+                      ? '🎯 Center'
+                      : '⚡ Auto (Smart Space)'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 mb-2.5">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onChangeTypography({
+                        ...typography,
+                        textPosition: 'top',
+                        textOffsetY: 0,
+                        safeZoneBackdrop: true,
+                      })
+                    }
+                    className={`p-2 rounded-xl text-xs font-bold border transition-all flex flex-col items-center justify-center gap-0.5 ${
+                      typography.textPosition === 'top'
+                        ? 'border-purple-400 bg-purple-500/20 text-purple-200 ring-2 ring-purple-400/30 shadow-md'
+                        : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:text-white hover:border-slate-700'
+                    }`}
+                    title="Move text to top empty area (above kittens, faces, subjects)"
+                  >
+                    <span className="text-sm">⬆️ Top</span>
+                    <span className="text-[10px] text-slate-400 font-normal">Empty Space</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onChangeTypography({
+                        ...typography,
+                        textPosition: 'center',
+                        textOffsetY: 0,
+                      })
+                    }
+                    className={`p-2 rounded-xl text-xs font-bold border transition-all flex flex-col items-center justify-center gap-0.5 ${
+                      (!typography.textPosition || typography.textPosition === 'center') && !typography.textOffsetY
+                        ? 'border-purple-400 bg-purple-500/20 text-purple-200 ring-2 ring-purple-400/30 shadow-md'
+                        : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:text-white hover:border-slate-700'
+                    }`}
+                    title="Center text (for Corner Floral & Clean Presets)"
+                  >
+                    <span className="text-sm">🎯 Center</span>
+                    <span className="text-[10px] text-slate-400 font-normal">Corner Designs</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onChangeTypography({
+                        ...typography,
+                        textPosition: 'auto',
+                        textOffsetY: 0,
+                      })
+                    }
+                    className={`p-2 rounded-xl text-xs font-bold border transition-all flex flex-col items-center justify-center gap-0.5 ${
+                      typography.textPosition === 'auto'
+                        ? 'border-purple-400 bg-purple-500/20 text-purple-200 ring-2 ring-purple-400/30 shadow-md'
+                        : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:text-white hover:border-slate-700'
+                    }`}
+                    title="Auto-detect subject vs empty space"
+                  >
+                    <span className="text-sm">⚡ Auto</span>
+                    <span className="text-[10px] text-slate-400 font-normal">Detect Subject</span>
+                  </button>
+                </div>
+
+                {/* Fine-tune vertical position slider & Backdrop Protection toggle */}
+                <div className="flex flex-col gap-2 p-2.5 rounded-xl bg-slate-950/40 border border-slate-800 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400">Vertical Fine-tune (Drag offset):</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-purple-300">{typography.textOffsetY || 0}px</span>
+                      {Boolean(typography.textOffsetY) && (
+                        <button
+                          type="button"
+                          onClick={() => onChangeTypography({ ...typography, textOffsetY: 0 })}
+                          className="px-1.5 py-0.5 rounded text-[10px] text-slate-400 hover:text-white bg-slate-800 border border-slate-700"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <input
+                    type="range"
+                    min="-250"
+                    max="250"
+                    step="5"
+                    value={typography.textOffsetY || 0}
+                    onChange={(e) =>
+                      onChangeTypography({
+                        ...typography,
+                        textOffsetY: Number(e.target.value),
+                      })
+                    }
+                    className="w-full accent-purple-400 cursor-pointer h-1.5 rounded-lg bg-slate-800"
+                  />
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
+                    <label className="text-[11px] text-slate-300 flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={typography.safeZoneBackdrop ?? (typography.textPosition === 'top')}
+                        onChange={(e) =>
+                          onChangeTypography({
+                            ...typography,
+                            safeZoneBackdrop: e.target.checked,
+                          })
+                        }
+                        className="rounded border-slate-700 text-purple-600 focus:ring-purple-500 w-3.5 h-3.5"
+                      />
+                      <span>Subject Protection Backdrop (soft 25% tint behind text)</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 

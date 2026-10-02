@@ -45,6 +45,7 @@ export interface CustomUploadedBackground {
   title: string;
   url: string; // compressed data URL
   createdAt: number;
+  default?: boolean;
 }
 
 export interface BackgroundItem {
@@ -55,6 +56,7 @@ export interface BackgroundItem {
   thumbnailUrl?: string;
   style: 'natural' | 'watercolor' | 'gradient';
   tags: string[];
+  default?: boolean;
 }
 
 export type FontFamily =
@@ -82,6 +84,17 @@ export type DecorativeOrnament = 'none' | 'cross' | 'leaf-wreath' | 'quote-marks
 
 export type TextColorMode = 'auto' | 'gold-glow' | 'dark' | 'white';
 
+export type TextVerticalPosition = 'auto' | 'top' | 'center' | 'bottom';
+
+export interface SafeZone {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  alignment: 'top' | 'center' | 'bottom';
+  isFullPhoto?: boolean;
+}
+
 export interface TypographySettings {
   fontFamily: FontFamily;
   fontSize: number; // base scale 20 - 70
@@ -91,6 +104,10 @@ export interface TypographySettings {
   textAlign: TextAlign;
   textColor: string;
   textColorMode?: TextColorMode; // 'auto' (default: smart auto-detection) | 'gold-glow' | 'dark' | 'white'
+  textPosition?: TextVerticalPosition; // 'auto' (smart empty-space detection) | 'top' | 'center' | 'bottom'
+  textOffsetY?: number; // Manual vertical drag / offset in pixels (-300 to 300)
+  isFullPhoto?: boolean; // Set when image has subjects (kittens, scenery) needing top empty-space
+  safeZoneBackdrop?: boolean; // Semi-transparent backdrop blur behind text for photo readability
   isDarkBackgroundDetected?: boolean;
   shadowStyle: TextShadowStyle;
   shadowColor: string;

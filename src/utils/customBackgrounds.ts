@@ -4,19 +4,49 @@ const DB_NAME = 'wordsoflife_custom_assets_db';
 const STORE_NAME = 'custom_backgrounds';
 const DB_VERSION = 1;
 const LOCAL_STORAGE_KEY = 'wordsoflife_custom_backgrounds_v1';
-const LEGACY_LOCAL_STORAGE_KEY = 'luminaverse_custom_backgrounds_v1';
+
+export const DEFAULT_COMMUNITY_BACKGROUND: CustomUploadedBackground = {
+  id: 'L0xbgIH2VYpMD83zqxb_0',
+  title: 'Floral Dark Navy Roses Corner (Clean)',
+  url: '/backgrounds/community/floral-dark-navy-clean.png',
+  default: true,
+  createdAt: 1790975000000,
+};
+
+export const MOTHERS_DAY_BACKGROUND: CustomUploadedBackground = {
+  id: 'EEaSRLrLSJATESDVRzQz--k--',
+  title: "Floral Dark Navy - MOTHER'S DAY Edition (has text)",
+  url: '/backgrounds/community/floral-dark-navy-roses.png',
+  default: false,
+  createdAt: 1790974000000,
+};
 
 // Synchronous instant retrieval from LocalStorage
 export function getStoredCustomBackgrounds(): CustomUploadedBackground[] {
-  if (typeof window === 'undefined') return [];
+  if (typeof window === 'undefined') return [DEFAULT_COMMUNITY_BACKGROUND, MOTHERS_DAY_BACKGROUND];
   try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY) || localStorage.getItem(LEGACY_LOCAL_STORAGE_KEY);
-    if (!raw) return [];
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) return [DEFAULT_COMMUNITY_BACKGROUND, MOTHERS_DAY_BACKGROUND];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    let list: CustomUploadedBackground[] = Array.isArray(parsed) ? parsed : [];
+    // Ensure Mother's Day edition title and default are fixed if cached
+    list = list.map((item) => {
+      if (item.id === 'EEaSRLrLSJATESDVRzQz--k--' || item.url.includes('floral-dark-navy-roses.png')) {
+        return {
+          ...item,
+          title: "Floral Dark Navy - MOTHER'S DAY Edition (has text)",
+          default: false,
+        };
+      }
+      return item;
+    });
+    // Remove clean item if already exists to re-insert at top
+    list = list.filter((item) => item.id !== DEFAULT_COMMUNITY_BACKGROUND.id && item.url !== DEFAULT_COMMUNITY_BACKGROUND.url);
+    list.unshift(DEFAULT_COMMUNITY_BACKGROUND);
+    return list;
   } catch (err) {
     console.warn('Failed to parse custom backgrounds from localStorage:', err);
-    return [];
+    return [DEFAULT_COMMUNITY_BACKGROUND, MOTHERS_DAY_BACKGROUND];
   }
 }
 
@@ -218,15 +248,20 @@ export async function getCustomBackgrounds(): Promise<CustomUploadedBackground[]
 
     // Merge items from Community, IDB, and LocalStorage by ID
     const map = new Map<string, CustomUploadedBackground>();
+    map.set(DEFAULT_COMMUNITY_BACKGROUND.id, DEFAULT_COMMUNITY_BACKGROUND);
     communityItems.forEach((item) => map.set(item.id, item));
     localItems.forEach((item) => map.set(item.id, item));
     idbList.forEach((item) => map.set(item.id, item));
 
-    const merged = Array.from(map.values()).sort((a, b) => b.createdAt - a.createdAt);
+    const merged = Array.from(map.values()).sort((a, b) => {
+      if (a.id === DEFAULT_COMMUNITY_BACKGROUND.id || a.default) return -1;
+      if (b.id === DEFAULT_COMMUNITY_BACKGROUND.id || b.default) return 1;
+      return b.createdAt - a.createdAt;
+    });
     saveToLocalStorage(merged);
     return merged;
   } catch {
-    return localItems;
+    return localItems.length > 0 ? localItems : [DEFAULT_COMMUNITY_BACKGROUND];
   }
 }
 

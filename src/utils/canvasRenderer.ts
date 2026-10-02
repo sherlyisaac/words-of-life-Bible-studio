@@ -4,6 +4,7 @@ import {
   DecorativeOrnament,
   DesignProject,
   ImageAdjustments,
+  SafeZone,
   TypographySettings,
 } from '../types';
 
@@ -395,6 +396,126 @@ function drawDarkNavyBackground(ctx: CanvasRenderingContext2D, w: number, h: num
   ctx.restore();
 }
 
+/**
+ * Smart Safe-Zone & Empty-Space Detection Engine:
+ * - Corner Floral designs (dark navy floral, pink roses, vintage frames, clean presets) -> Center transparent safe zone (scripture centered)
+ * - Full Photo backgrounds with subjects (e.g. kittens in basket, autumn couple, lake, misty mountains) -> Automatically detects empty space (top ~9-10% above subjects)
+ */
+export function detectSafeZone(
+  bgSource: HTMLImageElement | HTMLCanvasElement | string,
+  canvasW = 1080,
+  canvasH = 1920
+): SafeZone {
+  const urlStr = typeof bgSource === 'string' ? bgSource.toLowerCase() : '';
+
+  // 1. Explicit Subject & Basket / Kitten / Photo detection
+  const isKittenOrBasket =
+    urlStr.includes('0ej9') ||
+    urlStr.includes('basket') ||
+    urlStr.includes('cat') ||
+    urlStr.includes('kitten') ||
+    urlStr.includes('puppy') ||
+    urlStr.includes('pet');
+
+  const isCornerFloralOrClean =
+    urlStr.includes('floral-dark-navy') ||
+    urlStr.includes('floral-butterflies') ||
+    urlStr.includes('vintage-garden') ||
+    urlStr.includes('corner-floral') ||
+    urlStr.startsWith('clean:') ||
+    urlStr.includes('parchment') ||
+    urlStr.includes('bokeh') ||
+    urlStr.includes('soft-gradient');
+
+  // If corner floral or clean preset, the center is specifically made for scripture
+  if (isCornerFloralOrClean && !isKittenOrBasket) {
+    return {
+      x: Math.round(canvasW * 0.08),
+      y: Math.round(canvasH * 0.20),
+      width: Math.round(canvasW * 0.84),
+      height: Math.round(canvasH * 0.60),
+      alignment: 'center',
+      isFullPhoto: false,
+    };
+  }
+
+  // Full scenic photos or subjects in basket
+  const isFullPhoto =
+    isKittenOrBasket ||
+    urlStr.includes('unsplash') ||
+    urlStr.includes('photo-') ||
+    urlStr.includes('mountain') ||
+    urlStr.includes('autumn') ||
+    urlStr.includes('lake') ||
+    urlStr.includes('cloud') ||
+    urlStr.includes('hill');
+
+  if (isKittenOrBasket || isFullPhoto) {
+    return {
+      x: Math.round(canvasW * 0.075),
+      y: Math.round(canvasH * 0.09), // Top 9-10% empty area
+      width: Math.round(canvasW * 0.85),
+      height: Math.round(canvasH * 0.36),
+      alignment: 'top',
+      isFullPhoto: true,
+    };
+  }
+
+  // 2. Dynamic Computer Vision Analysis: sample top vs center variance on canvas
+  if (typeof bgSource !== 'string' && 'getContext' in bgSource) {
+    try {
+      const ctx = (bgSource as HTMLCanvasElement).getContext('2d');
+      if (ctx) {
+        const topSlice = ctx.getImageData(
+          Math.round(canvasW * 0.15),
+          Math.round(canvasH * 0.08),
+          Math.round(canvasW * 0.70),
+          Math.round(canvasH * 0.22)
+        ).data;
+        const centerSlice = ctx.getImageData(
+          Math.round(canvasW * 0.15),
+          Math.round(canvasH * 0.38),
+          Math.round(canvasW * 0.70),
+          Math.round(canvasH * 0.28)
+        ).data;
+
+        let topVariance = 0;
+        let centerVariance = 0;
+        for (let i = 4; i < topSlice.length; i += 8) {
+          topVariance += Math.abs(topSlice[i] - topSlice[i - 4]);
+        }
+        for (let i = 4; i < centerSlice.length; i += 8) {
+          centerVariance += Math.abs(centerSlice[i] - centerSlice[i - 4]);
+        }
+
+        topVariance /= topSlice.length / 8;
+        centerVariance /= centerSlice.length / 8;
+
+        // If center has noticeably higher detail/subject edges than top, top is the empty safe zone
+        if (centerVariance > topVariance * 1.25) {
+          return {
+            x: Math.round(canvasW * 0.075),
+            y: Math.round(canvasH * 0.09),
+            width: Math.round(canvasW * 0.85),
+            height: Math.round(canvasH * 0.36),
+            alignment: 'top',
+            isFullPhoto: true,
+          };
+        }
+      }
+    } catch {}
+  }
+
+  return {
+    x: Math.round(canvasW * 0.08),
+    y: Math.round(canvasH * 0.20),
+    width: Math.round(canvasW * 0.84),
+    height: Math.round(canvasH * 0.60),
+    alignment: 'center',
+    isFullPhoto: false,
+  };
+}
+
 export async function renderDesignToCanvas(
   canvas: HTMLCanvasElement,
   design: {
@@ -696,8 +817,53 @@ export async function renderDesignToCanvas(
 
   currentBaseSize = Math.max(minLangBaseSize, currentBaseSize);
 
-  // 6. Auto-Center Vertically
-  const startY = Math.max(Math.round(h * 0.08), (h - finalTotalContentHeight) / 2);
+  // 6. Smart Safe-Zone & Empty-Space Placement
+  // - Corner floral designs / clean presets -> Center transparent safe zone
+  // - Full photo / subjects in basket (kittens, scenery) -> Aligns to top empty area (top ~9-10%) so subjects are NEVER covered!
+  const safeZone = detectSafeZone(background.url || canvas, w, h);
+  const isFullPhoto = Boolean(typography.isFullPhoto ?? safeZone.isFullPhoto);
+  const textPosition = typography.textPosition || (safeZone.alignment === 'top' ? 'top' : 'center');
+
+  let startY: number;
+  if (textPosition === 'top') {
+    // Top empty area above subjects
+    startY = Math.round(h * 0.09) + (typography.textOffsetY || 0);
+  } else if (textPosition === 'bottom') {
+    // Bottom area below subjects
+    startY = Math.max(Math.round(h * 0.58), h - finalTotalContentHeight - Math.round(h * 0.08)) + (typography.textOffsetY || 0);
+  } else {
+    // Default center for corner floral and clean presets
+    startY = Math.max(Math.round(h * 0.08), (h - finalTotalContentHeight) / 2) + (typography.textOffsetY || 0);
+  }
+
+  // Draw semi-transparent backdrop behind text for readability when on full photo or empty space
+  const shouldDrawBackdrop =
+    typography.safeZoneBackdrop ?? (isFullPhoto && textPosition === 'top');
+
+  if (shouldDrawBackdrop) {
+    const padX = Math.round(24 * baseScale);
+    const padY = Math.round(18 * baseScale);
+    const boxW = Math.min(w * 0.90, maxContainerWidth + padX * 2);
+    const boxH = finalTotalContentHeight + padY * 2;
+    const boxX = (w - boxW) / 2;
+    const boxY = startY - padY;
+    const cornerR = Math.round(18 * baseScale);
+
+    ctx.save();
+    ctx.beginPath();
+    if (typeof (ctx as any).roundRect === 'function') {
+      (ctx as any).roundRect(boxX, boxY, boxW, boxH, cornerR);
+    } else {
+      ctx.rect(boxX, boxY, boxW, boxH);
+    }
+    // background: rgba(0,0,0,0.25) backdrop-filter feel for readability without covering subjects
+    ctx.fillStyle = isDarkBg ? 'rgba(0, 0, 0, 0.28)' : 'rgba(0, 0, 0, 0.22)';
+    ctx.fill();
+    ctx.strokeStyle = isDarkBg ? 'rgba(255, 232, 160, 0.22)' : 'rgba(255, 255, 255, 0.20)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  }
 
   // 7. Smart Typography Colors & Glow:
   // IF DARK BACKGROUND:

@@ -37,13 +37,19 @@ import {
   getCustomBackgrounds,
   getStoredCustomBackgrounds,
   saveCustomBackground,
+  DEFAULT_COMMUNITY_BACKGROUND,
 } from './utils/customBackgrounds';
 import { detectSmartTextColor } from './utils/canvasRenderer';
+import { COMMUNITY_DESIGNS } from './data/backgrounds';
+
+export const DEFAULT_BACKGROUND_ID = 'L0xbgIH2VYpMD83zqxb_0';
+export const DEFAULT_BACKGROUND_FILE = '/backgrounds/community/floral-dark-navy-clean.png';
 
 const DEFAULT_VERSE: Verse = CURATED_VERSES[0]; // Philippians 4:6-7
 const DEFAULT_BACKGROUND = {
-  type: 'preset' as const,
-  url: CURATED_BACKGROUNDS[0].url,
+  type: 'custom' as const,
+  url: DEFAULT_BACKGROUND_FILE,
+  id: DEFAULT_BACKGROUND_ID,
 };
 
 const DEFAULT_TYPOGRAPHY: TypographySettings = {
@@ -53,10 +59,10 @@ const DEFAULT_TYPOGRAPHY: TypographySettings = {
   lineHeight: 1.30, // English tighter line height: 1.3
   letterSpacing: 0.8, // Letter spacing: +0.8px
   textAlign: 'center',
-  textColor: '#1A1A1A', // Smart Charcoal Black default for light preset
+  textColor: '#FFE8A0', // Champagne Gold default for dark navy floral background
   textColorMode: 'auto', // Default: Auto (Smart Detection)
-  shadowStyle: 'none',
-  shadowColor: 'rgba(0,0,0,0.16)',
+  shadowStyle: 'glow',
+  shadowColor: '#FFD700',
   textBoxEnabled: false, // White Box OFF - background is clean!
   textBoxMode: 'white',
   backdropStyle: 'none',
@@ -65,20 +71,20 @@ const DEFAULT_TYPOGRAPHY: TypographySettings = {
   ornament: 'cross',
   showReference: true,
   referenceFontSize: 14, // 14px reference at bottom
-  referenceColor: '#C5A880', // Gold color #C5A880 for English
+  referenceColor: '#FFE8A0', // Gold color #FFE8A0 for dark navy
   referenceItalic: false, // ALL CAPS clean
   textContrastHalo: false,
-  strokeWidth: 0,
-  strokeColor: 'transparent',
+  strokeWidth: 3,
+  strokeColor: 'rgba(0,0,0,0.6)',
 };
 
 // Default image adjustments with strictly separated blur logic:
-// A) UPLOADED BACKGROUNDS: uploadedBlur = 0% default, NEVER auto-blur
+// A) UPLOADED & CORNER BACKGROUNDS: uploadedBlur = 0% default, NEVER auto-blur
 // B) PHOTO PRESETS: blur = 60% default (soft celestial clouds / mountains)
 const DEFAULT_ADJUSTMENTS: ImageAdjustments = {
   brightness: 0,
   contrast: 4,
-  blur: 60, // Photo Blur: 60% default for photo presets (Clouds, Mountains)
+  blur: 0, // Clean 0% blur for default floral corner design
   uploadedBlur: 0, // Soft Focus: 0% default, NEVER auto-blur for uploaded backgrounds!
   originalQuality: true, // Keep uploaded PNG/images crisp 1080x1920, no compression blur
   vignette: 0,
@@ -91,6 +97,8 @@ const DEFAULT_ADJUSTMENTS: ImageAdjustments = {
 
 export default function App() {
   // Studio Core States - Story 9:16 is default for WhatsApp Status
+  const [selectedBackgroundId, setSelectedBackgroundId] = useState<string>(DEFAULT_BACKGROUND_ID);
+  const [selectedBackgroundFile, setSelectedBackgroundFile] = useState<string>(DEFAULT_BACKGROUND_FILE);
   const [verse, setVerse] = useState<Verse>(DEFAULT_VERSE);
   const [background, setBackground] = useState<DesignProject['background']>(DEFAULT_BACKGROUND);
   const [aspectRatio, setAspectRatio] = useState<AspectRatioType>('9:16');
@@ -342,6 +350,10 @@ export default function App() {
   const handleLoadDesign = (project: DesignProject) => {
     setVerse(project.verse);
     setBackground(project.background);
+    setSelectedBackgroundFile(project.background.url);
+    if ((project.background as any).id) {
+      setSelectedBackgroundId((project.background as any).id);
+    }
     setAspectRatio(project.aspectRatio);
     setTypography(project.typography);
     setAdjustments(project.adjustments);
@@ -368,6 +380,10 @@ export default function App() {
 
   // Background change handler ensuring strictly separated blur logic
   const handleSetBackground = (newBg: DesignProject['background']) => {
+    setSelectedBackgroundFile(newBg.url);
+    if ((newBg as any).id) {
+      setSelectedBackgroundId((newBg as any).id);
+    }
     setBackground(newBg);
     const isCornerDesign =
       (newBg as any).category === 'Corner Designs' ||

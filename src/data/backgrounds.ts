@@ -70,7 +70,46 @@ export const PHOTO_BACKGROUND_PRESETS: BackgroundItem[] = [
   }
 ];
 
+export const COMMUNITY_DESIGNS: BackgroundItem[] = [
+  {
+    id: 'L0xbgIH2VYpMD83zqxb_0',
+    title: 'Floral Dark Navy Roses Corner (Clean)',
+    category: 'Community Designs',
+    style: 'natural',
+    url: '/backgrounds/community/floral-dark-navy-clean.png',
+    default: true,
+    tags: ['floral', 'navy', 'roses', 'gold', 'stars', 'corner', 'frame', 'dark', 'clean']
+  },
+  {
+    id: 'EEaSRLrLSJATESDVRzQz--k--',
+    title: "Floral Dark Navy - MOTHER'S DAY Edition (has text)",
+    category: 'Community Designs',
+    style: 'natural',
+    url: '/backgrounds/community/floral-dark-navy-roses.png',
+    default: false,
+    tags: ['floral', 'navy', 'roses', 'gold', 'stars', 'mothers-day', 'holiday']
+  }
+];
+
 export const CORNER_DESIGN_PRESETS: BackgroundItem[] = [
+  {
+    id: 'corner-floral-navy-clean',
+    title: 'Floral Dark Navy Roses Corner (Clean)',
+    category: 'Corner Designs',
+    style: 'natural',
+    url: '/backgrounds/community/floral-dark-navy-clean.png',
+    default: true,
+    tags: ['floral', 'navy', 'roses', 'gold', 'stars', 'corner', 'frame', 'dark', 'clean']
+  },
+  {
+    id: 'corner-floral-navy-roses',
+    title: "Floral Dark Navy - MOTHER'S DAY Edition (has text)",
+    category: 'Corner Designs',
+    style: 'natural',
+    url: '/backgrounds/community/floral-dark-navy-roses.png',
+    default: false,
+    tags: ['floral', 'navy', 'roses', 'gold', 'stars', 'mothers-day', 'holiday']
+  },
   {
     id: 'corner-floral-pink',
     title: 'Floral Butterflies & Bees - Pink',

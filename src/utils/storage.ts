@@ -1,15 +1,12 @@
 import { DesignProject, NotificationSchedule } from '../types';
 
 const GALLERY_STORAGE_KEY = 'wordsoflife_saved_designs_v1';
-const LEGACY_GALLERY_KEY = 'luminaverse_saved_designs_v1';
 const FAVORITES_STORAGE_KEY = 'wordsoflife_favorite_verses_v1';
-const LEGACY_FAVORITES_KEY = 'luminaverse_favorite_verses_v1';
 const NOTIFICATION_STORAGE_KEY = 'wordsoflife_daily_reminder_v1';
-const LEGACY_NOTIFICATION_KEY = 'luminaverse_daily_reminder_v1';
 
 export function getSavedDesigns(): DesignProject[] {
   try {
-    const raw = localStorage.getItem(GALLERY_STORAGE_KEY) || localStorage.getItem(LEGACY_GALLERY_KEY);
+    const raw = localStorage.getItem(GALLERY_STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
   } catch (err) {
     console.warn('Failed to load gallery designs:', err);
@@ -50,7 +47,7 @@ export function deleteDesign(id: string): DesignProject[] {
 
 export function getFavoriteVerseIds(): string[] {
   try {
-    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY) || localStorage.getItem(LEGACY_FAVORITES_KEY);
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
   } catch {
     return [];
@@ -71,7 +68,7 @@ export function toggleFavoriteVerse(verseId: string): string[] {
 
 export function getNotificationSchedule(): NotificationSchedule {
   try {
-    const raw = localStorage.getItem(NOTIFICATION_STORAGE_KEY) || localStorage.getItem(LEGACY_NOTIFICATION_KEY);
+    const raw = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch {}
   return {

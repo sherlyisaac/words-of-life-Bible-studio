@@ -1,13 +1,14 @@
 {
-  "name": "react-example",
+  "name": "wordsoflife",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "WordsOfLife - Bible Verse Studio",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "tsx server.ts",
+    "start": "node server.ts",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"
   },
